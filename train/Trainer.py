@@ -15,15 +15,18 @@ class Trainer:
         self.val_acc = []
 
     def init_callback(self):
-        conf = self.congig
-        self.callbacks.append(
-            ModelCheckPoint(
-                filepath=None,
-                monitor=conf.callbacks.checkpoint_monitor,
-                mode=sconf.callbacks.checkpoint_mode,
-                saved_best_only=conf.callbacks.checkpoint_save_best_only,
-                save_weights_only=conf.callbacks.checkpoint_save_weights_only,
-                verbose=conf.checkpoint_verbose))
+        config = self.congig
+
+        filepath = os.path.join(
+            self.config.callbacks.checkpoint_dir, '.hdf5')
+
+        self.callbacks.append(ModelCheckPoint(
+            filepath=filepath,
+            monitor=config.callbacks.checkpoint_monitor,
+            mode=config.callbacks.checkpoint_mode,
+            saved_best_only=config.callbacks.checkpoint_save_best_only,
+            save_weights_only=config.callbacks.checkpoint_save_weights_only,
+            verbose=config.checkpoint_verbose))
 
         self.callbacks.append(
             TensorBoard(
@@ -31,13 +34,13 @@ class Trainer:
                 write_graph=conf.callbacks.tensorboard_write_graph))
 
     def train(self):
-        conf = self.config
+        config = self.config
         history = self.model.fit(
             self.data[0], self.data[1],
-            epochs=conf.trainer.num_epochs,
-            verbose=conf.trainer.verbose_training,
-            batch_size=conf.trainer.batch_size,
-            validation_split=conf.traininer.validation_split,
+            epochs=config.trainer.num_epochs,
+            verbose=config.trainer.verbose_training,
+            batch_size=config.trainer.batch_size,
+            validation_split=config.traininer.validation_split,
             callbacks=self.callbacks)
 
         self.loss.extend(history.history['loss'])
