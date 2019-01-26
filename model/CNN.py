@@ -6,7 +6,7 @@ from tensorflow.keras.layers import Input, Dense, Conv2D
 from tensorflow.keras.layers import MaxPooling2D, Dropout, Flatten
 
 
-class NeuralNetwork(BaseModel):
+class ConvNet(BaseModel):
     def __init__(self, config):
         super(NeuralNetwork, self).__init__(config)
         self.build_model()
