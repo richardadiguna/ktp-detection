@@ -15,27 +15,29 @@ class Trainer:
         self.val_acc = []
 
     def init_callback(self):
+        conf = self.congig
         self.callbacks.append(
             ModelCheckPoint(
                 filepath=None,
-                monitor=None,
-                mode=None,
-                saved_best_only=None,
-                save_weights_only=None,
-                verbose=None))
+                monitor=conf.callbacks.checkpoint_monitor,
+                mode=sconf.callbacks.checkpoint_mode,
+                saved_best_only=conf.callbacks.checkpoint_save_best_only,
+                save_weights_only=conf.callbacks.checkpoint_save_weights_only,
+                verbose=conf.checkpoint_verbose))
 
         self.callbacks.append(
             TensorBoard(
-                log_dir=None,
-                write_graph=None))
+                log_dir=conf.callbacks.tensorboard_log_dir,
+                write_graph=conf.callbacks.tensorboard_write_graph))
 
     def train(self):
+        conf = self.config
         history = self.model.fit(
             self.data[0], self.data[1],
-            epochs=None,
-            verbose=None,
-            batch_size=None,
-            validation_split=None,
+            epochs=conf.trainer.num_epochs,
+            verbose=conf.trainer.verbose_training,
+            batch_size=conf.trainer.batch_size,
+            validation_split=conf.traininer.validation_split,
             callbacks=self.callbacks)
 
         self.loss.extend(history.history['loss'])
