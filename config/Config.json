@@ -1,6 +1,6 @@
 {
   "exp": {
-    "name": "experiments"
+    "name": "ktp-detection"
   },
   "data_loader": {
     "dataset_path": "dataset/dataset.txt",
